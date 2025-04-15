@@ -56,4 +56,4 @@ Episodes should be valid JSON files with the following structure:
 - If you add or modify episodes while the application is running, you may need to refresh the browser
 \`\`\`
 
-
+Now, let's create a server-side API route to scan the episodes folder:

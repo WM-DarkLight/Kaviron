@@ -1,0 +1,130 @@
+{
+  "id": "echoes-of-the-infinite",
+  "title": "Echoes of the Infinite",
+  "author": "W.M. Darklight",
+  "description": "The USS Andraste stumbles upon a derelict alien craft in uncharted space, but something aboard is alive — and it knows the crew.",
+  "stardate": "74629.2",
+  "shipName": "USS Andraste NCC-9187",
+  "scenes": {
+    "start": {
+      "id": "start",
+      "title": "Bridge of the Andraste",
+      "text": [
+        "The stars stretch and shimmer across the main viewscreen. You sit at the center seat of the USS Andraste, an Intrepid-class starship assigned to deep-space reconnaissance near the Typhon Expanse.",
+        "A proximity alert draws your attention. Lieutenant Sarin at Ops looks up. 'Captain, we're detecting a massive derelict structure adrift ahead. It's... not in the database.'",
+        "Your science officer, Lt. Cmdr. Velor, narrows his eyes. 'Pre-warp signatures, yet... quantum-level architecture. It's ancient, but more advanced than anything we've seen.'"
+      ],
+      "choices": [
+        {
+          "text": "Take a shuttle and investigate the derelict ship.",
+          "nextScene": "investigate-derelict"
+        },
+        {
+          "text": "Send a probe first and analyze the results.",
+          "nextScene": "probe-analysis"
+        }
+      ]
+    },
+    "investigate-derelict": {
+      "id": "investigate-derelict",
+      "title": "Aboard the Silent Vessel",
+      "text": [
+        "The shuttle's lights cut through dense interstellar fog as you dock with the alien vessel. Inside, it's a crypt of quiet geometry — angles that defy logic, corridors that seem to rearrange.",
+        "Your tricorder beeps. 'Life signs. One. Faint. Humanoid physiology... but no visible source.'",
+        "A low hum pulses through the deck. Suddenly, one of your away team members freezes. 'Captain... it’s speaking to me... in my voice.'"
+      ],
+      "choices": [
+        {
+          "text": "Try to communicate with the entity.",
+          "nextScene": "contact-entity"
+        },
+        {
+          "text": "Evacuate and seal the alien ship.",
+          "nextScene": "seal-ship"
+        }
+      ]
+    },
+    "probe-analysis": {
+      "id": "probe-analysis",
+      "title": "Ghost Signals",
+      "text": [
+        "The probe transmits strange, fragmented data: overlapping timelines, impossible sensor readings, and a haunting audio loop — your own voice whispering, 'We never left.'",
+        "Commander Velor’s expression darkens. 'Sir... the derelict appears to be echoing our own quantum signature. It may be... mirroring us.'"
+      ],
+      "choices": [
+        {
+          "text": "Scrub the data and avoid contact.",
+          "nextScene": "abandon-ship"
+        },
+        {
+          "text": "Launch a manned expedition despite the risks.",
+          "nextScene": "investigate-derelict"
+        }
+      ]
+    },
+    "contact-entity": {
+      "id": "contact-entity",
+      "title": "The Mirror Consciousness",
+      "text": [
+        "The entity speaks through Ensign Rivas, its voice distorted. 'You are echoes. You reached too far. We are your shadow. We remember your end.'",
+        "Your mind reels as the ship flickers around you — past and future versions overlapping. You glimpse your own death, the ship breaking apart — or is it memory?",
+        "'We offer understanding,' the entity says. 'Or oblivion. Choose.'"
+      ],
+      "choices": [
+        {
+          "text": "Accept the knowledge it offers.",
+          "nextScene": "ascension"
+        },
+        {
+          "text": "Reject the entity and force a retreat.",
+          "nextScene": "seal-ship"
+        }
+      ]
+    },
+    "seal-ship": {
+      "id": "seal-ship",
+      "title": "Sealed in the Unknown",
+      "text": [
+        "You order immediate withdrawal. The docking clamps release, and the derelict fades behind you.",
+        "As you return to the Andraste, your logs glitch — entire entries erased or overwritten. You never launched a shuttle... or did you?",
+        "No one remembers exactly what happened. But some officers have dreams now. Of voices in corridors. Of themselves, watching, from the dark."
+      ],
+      "choices": [
+        {
+          "text": "Begin psychiatric evaluation of the crew.",
+          "nextScene": "start"
+        }
+      ]
+    },
+    "ascension": {
+      "id": "ascension",
+      "title": "The Infinite Thread",
+      "text": [
+        "The entity merges its consciousness with yours. In an instant, you see the timeline of the universe: the first flicker of hydrogen, the last dim ember of entropy.",
+        "You return to the Andraste changed. A part of the crew senses it — your insight, your silence.",
+        "Starfleet command classifies the mission. You continue your voyage. But in quiet moments... you hear the echo."
+      ],
+      "choices": [
+        {
+          "text": "Log the experience in a private captain’s file.",
+          "nextScene": "start"
+        }
+      ]
+    },
+    "abandon-ship": {
+      "id": "abandon-ship",
+      "title": "The Safer Path",
+      "text": [
+        "You order a full course correction and leave the region.",
+        "Weeks later, another Starfleet vessel passes the same coordinates. The derelict is gone — as if it was never there.",
+        "Some mysteries, perhaps, are meant to remain unsolved."
+      ],
+      "choices": [
+        {
+          "text": "Reflect on the unknown.",
+          "nextScene": "start"
+        }
+      ]
+    }
+  }
+}
