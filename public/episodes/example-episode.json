@@ -1,0 +1,101 @@
+{
+  "id": "romulan-negotiations",
+  "title": "Romulan Negotiations",
+  "author": "User Example",
+  "description": "Navigate delicate negotiations with the Romulan Empire to secure a peace treaty.",
+  "stardate": "48732.4",
+  "shipName": "USS Endeavour NCC-71805",
+  "scenes": {
+    "start": {
+      "id": "start",
+      "title": "Bridge - USS Endeavour",
+      "text": [
+        "Captain's Log, Stardate 48732.4. The USS Endeavour has been dispatched to the neutral zone to meet with a Romulan delegation. After years of tension, the Romulans have expressed interest in establishing a formal peace treaty with the Federation.",
+        "As you finish your log entry, your first officer, Commander Voss, approaches your chair.",
+        "\"Captain, we're approaching the rendezvous coordinates. Long-range sensors have detected a Romulan Warbird decloaking ahead.\""
+      ],
+      "choices": [
+        {
+          "text": "\"Yellow alert. Shields at standby. Let's proceed with caution.\"",
+          "nextScene": "yellow-alert"
+        },
+        {
+          "text": "\"Open a channel to the Romulan vessel.\"",
+          "nextScene": "hail-romulans"
+        },
+        {
+          "text": "\"Scan the Warbird for any signs of weapons being powered up.\"",
+          "nextScene": "scan-warbird"
+        }
+      ]
+    },
+    "yellow-alert": {
+      "id": "yellow-alert",
+      "title": "Bridge - Yellow Alert",
+      "text": [
+        "\"Yellow alert. Shields on standby,\" you order.",
+        "The alert panels around the bridge illuminate with a yellow glow as the crew moves to a heightened state of readiness.",
+        "\"The Romulan vessel is hailing us, Captain,\" reports your communications officer."
+      ],
+      "choices": [
+        {
+          "text": "\"On screen. Let's see what they have to say.\"",
+          "nextScene": "romulan-commander"
+        },
+        {
+          "text": "\"Scan them first. I want to know their tactical status before we talk.\"",
+          "nextScene": "scan-warbird"
+        }
+      ]
+    },
+    "hail-romulans": {
+      "id": "hail-romulans",
+      "title": "Bridge - Opening Communications",
+      "text": [
+        "\"Open a channel,\" you order.",
+        "The viewscreen flickers to life, revealing the bridge of the Romulan Warbird. A stern-faced Romulan commander sits in the center chair, flanked by officers at various stations.",
+        "\"I am Commander Tomalak of the Imperial Warbird Decius. We've been expecting you, Captain. The delegation is prepared to beam aboard your vessel at your convenience.\"",
+        "There's something in his tone that doesn't quite match his words - a hint of reservation, perhaps."
+      ],
+      "choices": [
+        {
+          "text": "\"We're honored to host the delegation, Commander. We'll prepare our transporter room immediately.\"",
+          "nextScene": "prepare-delegation"
+        },
+        {
+          "text": "\"Before we proceed, Commander, I'd like to establish some ground rules for these negotiations.\"",
+          "nextScene": "establish-rules"
+        },
+        {
+          "text": "\"Commander, I sense some hesitation. Are there concerns you'd like to address before we begin?\"",
+          "nextScene": "address-concerns"
+        }
+      ]
+    },
+    "scan-warbird": {
+      "id": "scan-warbird",
+      "title": "Bridge - Tactical Scan",
+      "text": [
+        "\"Scan the Warbird,\" you order.",
+        "Your tactical officer works at their console, analyzing the incoming sensor data.",
+        "\"Captain, the Warbird's weapons are powered down, but their shields are at minimum strength - standard procedure for diplomatic meetings. I'm detecting approximately 15 life signs preparing to transport. That's larger than the delegation we were expecting.\"",
+        "Your first officer frowns. \"That's almost twice the number we agreed upon. Could be security personnel, or...\"",
+        "He doesn't finish the sentence, but his implication is clear."
+      ],
+      "choices": [
+        {
+          "text": "\"Open a channel. We need to address this discrepancy.\"",
+          "nextScene": "address-delegation-size"
+        },
+        {
+          "text": "\"Yellow alert. I don't like surprises.\"",
+          "nextScene": "yellow-alert-scan"
+        },
+        {
+          "text": "\"Proceed as planned, but increase security in the transporter room and conference areas.\"",
+          "nextScene": "increase-security"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 270 50% 70%;
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 210 100% 80%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 100% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 30%;
+    --input: 0 0% 20%;
+    --ring: 30 100% 50%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* LCARS specific styles */
+.lcars-text {
+  font-family: "Arial", sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.lcars-title {
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.lcars-readout {
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.5px;
+}
+
+.lcars-button {
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.lcars-scanning {
+  position: relative;
+}
+
+.lcars-scanning::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #ff9900, transparent);
+  animation: scanning 2s infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@keyframes scanning {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Blinking effect for alerts */
+.lcars-blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Pulse effect for buttons */
+.lcars-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Enterprise-D Theme */
+.enterprise-theme {
+  --enterprise-primary: #99ccff;
+  --enterprise-secondary: #3366cc;
+  --enterprise-background: #000033;
+  --enterprise-text: #ffffff;
+}
+
+/* Voyager Theme */
+.voyager-theme {
+  --voyager-primary: #cc99cc;
+  --voyager-secondary: #663366;
+  --voyager-background: #330033;
+  --voyager-text: #ffffff;
+}
+
+/* Defiant Theme */
+.defiant-theme {
+  --defiant-primary: #cc0000;
+  --defiant-secondary: #990000;
+  --defiant-background: #330000;
+  --defiant-text: #ffcc00;
+}
+
+/* Minimalist Theme */
+.minimalist-theme {
+  --minimalist-primary: #ffffff;
+  --minimalist-secondary: #cccccc;
+  --minimalist-background: #000000;
+  --minimalist-text: #ffffff;
+}
