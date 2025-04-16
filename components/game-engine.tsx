@@ -9,6 +9,8 @@ import { getAvailableModules, initializeModules } from "@/lib/modules/module-reg
 import type { Episode, Scene, GameState, Choice, GameModule } from "@/lib/types"
 import { ThemedSceneDisplay } from "@/components/themed-scene-display"
 import { ThemedChoiceButtons } from "@/components/themed-choice-buttons"
+import { useFullscreen } from "@/contexts/fullscreen-context"
+import { FullscreenDisplay } from "@/components/fullscreen-display"
 
 interface GameEngineProps {
   episode: Episode
@@ -36,6 +38,7 @@ export function GameEngine({ episode, initialSceneId = "start", initialGameState
   const modulesInitializedRef = useRef<boolean>(false)
   const [sceneDisplayed, setSceneDisplayed] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const { isFullscreen } = useFullscreen()
 
   // Get the current scene based on the scene ID
   const currentScene = episode.scenes[currentSceneId]
@@ -327,35 +330,47 @@ export function GameEngine({ episode, initialSceneId = "start", initialGameState
   const availableChoices = getAvailableChoices(currentScene)
 
   return (
-    <LcarsLayout
-      episode={episode}
-      gameState={gameState}
-      currentSceneId={currentSceneId}
-      activeModule={activeModule}
-      onModuleChange={handleModuleChange}
-      onSave={handleSaveGame}
-      onExit={onExitGame}
-    >
-      {alert && <GameAlert type={alert.type} message={alert.message} onDismiss={handleDismissAlert} />}
-
-      {activeModule ? (
-        <ModulePanel
-          modules={{ [activeModule]: activeModules[activeModule] }}
-          moduleStates={gameState.moduleStates}
-          onModuleAction={handleModuleAction}
+    <>
+      {isFullscreen ? (
+        <FullscreenDisplay
+          scene={currentScene}
+          choices={availableChoices}
+          onSceneDisplayed={handleSceneDisplayed}
+          onChoiceSelected={handleChoiceSelected}
+          disabled={!sceneDisplayed || isTransitioning}
         />
       ) : (
-        <div className="p-4">
-          <ThemedSceneDisplay scene={currentScene} onSceneDisplayed={handleSceneDisplayed} />
-          <div className="mt-6">
-            <ThemedChoiceButtons
-              choices={currentScene.choices}
-              onChoiceSelected={handleChoiceSelected}
-              disabled={!sceneDisplayed || isTransitioning}
+        <LcarsLayout
+          episode={episode}
+          gameState={gameState}
+          currentSceneId={currentSceneId}
+          activeModule={activeModule}
+          onModuleChange={handleModuleChange}
+          onSave={handleSaveGame}
+          onExit={onExitGame}
+        >
+          {alert && <GameAlert type={alert.type} message={alert.message} onDismiss={handleDismissAlert} />}
+
+          {activeModule ? (
+            <ModulePanel
+              modules={{ [activeModule]: activeModules[activeModule] }}
+              moduleStates={gameState.moduleStates}
+              onModuleAction={handleModuleAction}
             />
-          </div>
-        </div>
+          ) : (
+            <div className="p-4">
+              <ThemedSceneDisplay scene={currentScene} onSceneDisplayed={handleSceneDisplayed} />
+              <div className="mt-6">
+                <ThemedChoiceButtons
+                  choices={availableChoices}
+                  onChoiceSelected={handleChoiceSelected}
+                  disabled={!sceneDisplayed || isTransitioning}
+                />
+              </div>
+            </div>
+          )}
+        </LcarsLayout>
       )}
-    </LcarsLayout>
+    </>
   )
 }

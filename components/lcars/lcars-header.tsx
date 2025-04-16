@@ -3,6 +3,7 @@
 import { Menu, Database, Activity, Shield } from "lucide-react"
 import { motion } from "framer-motion"
 import { ThemeSwitcher } from "@/components/theme-switcher"
+import { FullscreenToggle } from "@/components/fullscreen-toggle"
 
 interface LcarsHeaderProps {
   title: string
@@ -87,6 +88,9 @@ export function LcarsHeader({ title, stardate, shipName, alertLevel, onToggleSid
 
             <div className="flex items-center space-x-4">
               <ThemeSwitcher />
+              <div className="ml-2">
+                <FullscreenToggle />
+              </div>
               <div className="flex space-x-4">
                 <div className="text-right bg-black border border-[#f90] px-3 py-1 rounded-lg">
                   <div className="text-xs text-gray-400">STARDATE</div>

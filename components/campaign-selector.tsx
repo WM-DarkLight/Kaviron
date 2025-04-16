@@ -13,6 +13,9 @@ import { builtInCampaigns } from "@/lib/campaigns"
 import type { Campaign, Episode, GameState } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
+// First, let's update the imports to include Tabs components
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 interface CampaignSelectorProps {
   onStartCampaign: (campaign: Campaign, episode: Episode, gameState: GameState) => void
@@ -298,193 +301,345 @@ export function CampaignSelector({ onStartCampaign }: CampaignSelectorProps) {
     return colors[index % colors.length]
   }
 
+  // Handle starting a specific episode from a campaign
+  const handleStartSpecificEpisode = async (campaign: Campaign, episode: Episode) => {
+    if (!campaign || !episode) return
+
+    // Create initial game state
+    const initialGameState: GameState = {
+      flags: {},
+      variables: {},
+      moduleStates: {},
+    }
+
+    // Find the episode in the campaign
+    const campaignEpisode = campaign.episodes.find((ep) => ep.episodeId === episode.id)
+
+    if (campaignEpisode) {
+      // Apply any initial state modifications from the campaign episode
+      const gameState = prepareEpisodeInitialState(campaign.id, episode.id, initialGameState)
+
+      // Save campaign progress with this episode as current
+      await saveCampaignProgress(campaign.id, episode.id, [], gameState)
+
+      // Start the episode
+      onStartCampaign(campaign, episode, gameState)
+    } else {
+      setImportStatus({
+        success: false,
+        message: `Episode ${episode.id} is not part of this campaign.`,
+      })
+      setTimeout(() => setImportStatus(null), 3000)
+    }
+  }
+
+  // Replace the entire return statement with this improved LCARS interface
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col h-screen bg-black">
-      {/* Enhanced LCARS Header */}
-      <header className="bg-black text-white p-4 border-t-4 border-l-4 border-r-4 border-[#ff9900] rounded-t-lg">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            {/* LCARS decorative elements */}
-            <div className="flex flex-col mr-4">
-              <div className="w-16 h-12 bg-[#cc99cc] rounded-tl-lg rounded-br-lg"></div>
-              <div className="flex mt-1">
-                <div className="w-8 h-3 bg-[#ff9900]"></div>
-                <div className="w-8 h-3 bg-[#99ccff]"></div>
-              </div>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-[#ff9900] lcars-title">STAR TREK CAMPAIGN</h1>
-              <div className="flex items-center">
-                <div className="h-1 w-20 bg-[#cc99cc] mr-2"></div>
-                <span className="text-[#cc99cc] lcars-text">MISSION SELECTOR</span>
-                <div className="h-1 w-20 bg-[#cc99cc] ml-2"></div>
-              </div>
-            </div>
+    <div className="w-full h-screen flex flex-col bg-black overflow-hidden">
+      {/* LCARS Header Bar */}
+      <div className="w-full bg-black flex items-stretch h-24 relative">
+        {/* Left corner element */}
+        <div className="w-48 h-24 relative">
+          <div className="absolute top-0 left-0 w-36 h-16 bg-[#cc99cc] rounded-br-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-8 bg-[#cc99cc]"></div>
+        </div>
+
+        {/* Header title section */}
+        <div className="flex-grow flex flex-col justify-end">
+          <div className="flex items-center mb-1">
+            <h1 className="text-3xl font-bold text-[#ff9900] lcars-title tracking-wider">STAR TREK CAMPAIGN</h1>
+            <div className="ml-4 w-8 h-8 rounded-full bg-[#ff9900]"></div>
+            <div className="ml-2 w-16 h-8 rounded-full bg-[#99ccff]"></div>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex items-center">
+            <div className="h-2 w-32 bg-[#cc99cc] mr-4"></div>
+            <span className="text-[#cc99cc] lcars-text text-xl">MISSION SELECTOR</span>
+            <div className="h-2 w-full bg-[#cc99cc] ml-4"></div>
+          </div>
+        </div>
+
+        {/* Right corner element */}
+        <div className="w-48 h-24 relative">
+          <div className="absolute top-0 right-0 w-36 h-16 bg-[#cc99cc] rounded-bl-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-48 h-8 bg-[#cc99cc]"></div>
+          <div className="absolute top-4 right-4 flex space-x-2">
+            <div className="w-6 h-6 rounded-full bg-[#ff9900]"></div>
+            <div className="w-6 h-6 rounded-full bg-[#99ccff]"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content area */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left sidebar */}
+        <div className="w-48 bg-black flex flex-col">
+          <div className="h-32 w-full bg-[#cc99cc] rounded-br-3xl"></div>
+
+          {/* Control buttons */}
+          <div className="flex flex-col space-y-3 p-3 mt-4">
             <Button
               variant="outline"
-              className="border-[#99ccff] bg-[#99ccff] text-black hover:bg-[#c6e2ff] hover:text-black lcars-button"
+              className="border-[#99ccff] bg-[#99ccff] text-black hover:bg-[#c6e2ff] hover:text-black lcars-button h-12 justify-start pl-4"
               onClick={handleRefreshCampaigns}
               disabled={isRefreshing}
             >
               <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
               REFRESH
             </Button>
+
             <Button
               variant="outline"
-              className="border-[#cc99cc] bg-[#cc99cc] text-black hover:bg-[#996699] hover:text-white lcars-button"
+              className="border-[#ff9900] bg-[#ff9900] text-black hover:bg-[#ffb84d] hover:text-black lcars-button h-12 justify-start pl-4"
               onClick={handleImportCampaign}
             >
               <FolderPlus className="mr-2 h-4 w-4" />
               IMPORT
             </Button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept=".json"
-              multiple
-              className="hidden"
-            />
+
             <Button
               variant="outline"
-              className="border-[#ffcc00] bg-[#ffcc00] text-black hover:bg-[#ffee00] hover:text-black lcars-button"
+              className="border-[#ffcc00] bg-[#ffcc00] text-black hover:bg-[#ffee00] hover:text-black lcars-button h-12 justify-start pl-4"
               onClick={handleExportCampaign}
               disabled={!selectedCampaignId}
             >
               <Download className="mr-2 h-4 w-4" />
               EXPORT
             </Button>
-          </div>
-        </div>
 
-        {/* LCARS decorative bar */}
-        <div className="flex w-full mt-2">
-          <div className="h-2 w-24 bg-[#cc99cc] rounded-l-full"></div>
-          <div className="h-2 w-12 bg-[#ff9900]"></div>
-          <div className="h-2 flex-grow bg-[#99ccff]"></div>
-          <div className="h-2 w-12 bg-[#ff9900]"></div>
-          <div className="h-2 w-24 bg-[#cc99cc] rounded-r-full"></div>
-        </div>
-
-        {/* Import status message with LCARS styling */}
-        {importStatus && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`mt-2 p-2 rounded-lg text-center ${
-              importStatus.success ? "bg-[#66cc66]/30 text-[#88ff88]" : "bg-[#cc6666]/30 text-[#ff5555]"
-            } border-l-4 ${importStatus.success ? "border-[#66cc66]" : "border-[#cc6666]"}`}
-          >
-            {importStatus.message}
-          </motion.div>
-        )}
-      </header>
-
-      <div className="flex-grow bg-black p-4 border-l-4 border-r-4 border-[#ff9900] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center">
-            <div className="w-4 h-8 bg-[#cc99cc] rounded-l-full mr-2"></div>
-            <h2 className="text-xl font-bold text-[#cc99cc] lcars-title">CAMPAIGN DATABASE</h2>
-          </div>
-          <div className="flex items-center">
-            <div className="text-sm text-[#99ccff] lcars-readout mr-2">
-              {isLoading ? "LOADING CAMPAIGNS..." : `${campaigns.length} CAMPAIGNS AVAILABLE`}
-            </div>
-            <div className="w-4 h-8 bg-[#cc99cc] rounded-r-full"></div>
-          </div>
-        </div>
-
-        <ScrollArea className="h-[calc(100vh-250px)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-1">
-            {campaigns.map((campaign, index) => (
-              <motion.div key={campaign.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Card
-                  className={`bg-black cursor-pointer transition-all overflow-hidden ${
-                    selectedCampaignId === campaign.id
-                      ? "border-[#cc99cc] ring-2 ring-[#cc99cc]"
-                      : "border-gray-700 hover:border-[#cc99cc]"
-                  }`}
-                  onClick={() => handleSelectCampaign(campaign.id)}
-                >
-                  <div className="flex h-full">
-                    {/* Left decorative bar with different colors */}
-                    <div className={`w-3 ${getLcarsColor(index)}`}></div>
-
-                    <div className="flex-grow">
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <CardTitle className="text-[#cc99cc] flex items-center">
-                              <span className={`inline-block w-3 h-3 rounded-full ${getLcarsColor(index)} mr-2`}></span>
-                              {campaign.title}
-                            </CardTitle>
-                            <CardDescription className="text-[#99ccff]">By {campaign.author}</CardDescription>
-                          </div>
-                          {getCampaignSource(campaign.id) || (
-                            <Badge className="bg-[#ff9900] text-black">Campaign</Badge>
-                          )}
-                        </div>
-                      </CardHeader>
-                      <CardContent className="text-sm text-gray-300">
-                        <p>{campaign.description}</p>
-                        <div className="mt-2">
-                          <Badge className="bg-[#cc99cc] text-black">{campaign.episodes.length} Episodes</Badge>
-                        </div>
-                      </CardContent>
-                      <CardFooter className="flex justify-between items-center">
-                        <span className="text-xs text-[#99ccff] lcars-readout">
-                          {campaign.version ? `Version ${campaign.version}` : ""}
-                        </span>
-                        <div className="flex space-x-1">
-                          {Array.from({ length: 3 }).map((_, i) => (
-                            <div key={i} className={`w-2 h-2 rounded-full ${getLcarsColor((index + i) % 6)}`}></div>
-                          ))}
-                        </div>
-                      </CardFooter>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
-
-      {/* Enhanced LCARS Footer */}
-      <footer className="bg-black text-white p-4 border-b-4 border-l-4 border-r-4 border-[#ff9900] rounded-b-lg">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            {/* LCARS decorative elements */}
-            <div className="flex space-x-2">
-              <div className="w-16 h-8 bg-[#cc99cc] rounded-bl-lg"></div>
-              <div className="w-8 h-8 bg-[#ff9900] rounded-full"></div>
-              <div className="w-24 h-8 bg-[#99ccff] rounded-lg"></div>
-            </div>
-          </div>
-          <div className="flex space-x-3">
             {selectedCampaignId && !isSelectedCampaignBuiltIn && (
               <Button
                 variant="outline"
-                className="border-[#cc6666] bg-[#cc6666] text-white hover:bg-[#ff5555] hover:text-white lcars-button"
+                className="border-[#cc6666] bg-[#cc6666] text-white hover:bg-[#ff5555] hover:text-white lcars-button h-12 justify-start pl-4"
                 onClick={handleDeleteCampaign}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 DELETE
               </Button>
             )}
+          </div>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept=".json"
+            multiple
+            className="hidden"
+          />
+
+          {/* Bottom decorative element */}
+          <div className="mt-auto">
+            <div className="h-32 w-full bg-[#cc99cc] rounded-tr-3xl"></div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="flex-1 flex flex-col bg-black overflow-hidden">
+          {/* Status bar */}
+          <div className="h-12 bg-black flex items-center px-4">
+            <div className="w-4 h-8 bg-[#cc99cc] rounded-l-full mr-2"></div>
+            <h2 className="text-xl font-bold text-[#cc99cc] lcars-title">CAMPAIGN DATABASE</h2>
+            <div className="flex-grow mx-4 h-2 bg-[#cc99cc]"></div>
+            <div className="text-sm text-[#99ccff] lcars-readout mr-2 bg-black px-2 py-1 border border-[#99ccff]">
+              {isLoading ? "LOADING CAMPAIGNS..." : `${campaigns.length} CAMPAIGNS AVAILABLE`}
+            </div>
+            <div className="w-4 h-8 bg-[#cc99cc] rounded-r-full"></div>
+          </div>
+
+          {/* Import status message */}
+          {importStatus && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mx-4 p-2 rounded-lg text-center ${
+                importStatus.success ? "bg-[#66cc66]/30 text-[#88ff88]" : "bg-[#cc6666]/30 text-[#ff5555]"
+              } border-l-4 ${importStatus.success ? "border-[#66cc66]" : "border-[#cc6666]"}`}
+            >
+              {importStatus.message}
+            </motion.div>
+          )}
+
+          {/* Tabs for Campaigns and Episodes */}
+          <Tabs defaultValue="campaigns" className="flex-1 flex flex-col">
+            <div className="px-4 pt-2">
+              <TabsList className="bg-black border border-[#cc99cc] grid w-[400px] grid-cols-2">
+                <TabsTrigger
+                  value="campaigns"
+                  className="data-[state=active]:bg-[#cc99cc] data-[state=active]:text-black"
+                >
+                  CAMPAIGNS
+                </TabsTrigger>
+                <TabsTrigger
+                  value="episodes"
+                  className="data-[state=active]:bg-[#cc99cc] data-[state=active]:text-black"
+                  disabled={!selectedCampaignId}
+                >
+                  EPISODES
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* Campaigns Tab */}
+            <TabsContent value="campaigns" className="flex-1 overflow-hidden">
+              <ScrollArea className="flex-1 px-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 py-4">
+                  {campaigns.map((campaign, index) => (
+                    <motion.div key={campaign.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Card
+                        className={`bg-black cursor-pointer transition-all overflow-hidden ${
+                          selectedCampaignId === campaign.id
+                            ? "border-[#cc99cc] ring-2 ring-[#cc99cc]"
+                            : "border-gray-700 hover:border-[#cc99cc]"
+                        }`}
+                        onClick={() => handleSelectCampaign(campaign.id)}
+                      >
+                        <div className="flex h-full">
+                          {/* Left decorative bar with different colors */}
+                          <div className={`w-3 ${getLcarsColor(index)}`}></div>
+
+                          <div className="flex-grow">
+                            <CardHeader className="pb-2">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <CardTitle className="text-[#cc99cc] flex items-center">
+                                    <span
+                                      className={`inline-block w-3 h-3 rounded-full ${getLcarsColor(index)} mr-2`}
+                                    ></span>
+                                    {campaign.title}
+                                  </CardTitle>
+                                  <CardDescription className="text-[#99ccff]">By {campaign.author}</CardDescription>
+                                </div>
+                                {getCampaignSource(campaign.id) || (
+                                  <Badge className="bg-[#ff9900] text-black">Campaign</Badge>
+                                )}
+                              </div>
+                            </CardHeader>
+                            <CardContent className="text-sm text-gray-300">
+                              <p>{campaign.description}</p>
+                              <div className="mt-2">
+                                <Badge className="bg-[#cc99cc] text-black">{campaign.episodes.length} Episodes</Badge>
+                              </div>
+                            </CardContent>
+                            <CardFooter className="flex justify-between items-center">
+                              <span className="text-xs text-[#99ccff] lcars-readout">
+                                {campaign.version ? `Version ${campaign.version}` : ""}
+                              </span>
+                              <div className="flex space-x-1">
+                                {Array.from({ length: 3 }).map((_, i) => (
+                                  <div
+                                    key={i}
+                                    className={`w-2 h-2 rounded-full ${getLcarsColor((index + i) % 6)}`}
+                                  ></div>
+                                ))}
+                              </div>
+                            </CardFooter>
+                          </div>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </TabsContent>
+
+            {/* Episodes Tab */}
+            <TabsContent value="episodes" className="flex-1 overflow-hidden">
+              {selectedCampaignId && (
+                <ScrollArea className="flex-1 px-4">
+                  <div className="py-4">
+                    {(() => {
+                      const selectedCampaign = campaigns.find((camp) => camp.id === selectedCampaignId)
+                      if (!selectedCampaign) return <p className="text-[#cc6666]">No campaign selected</p>
+
+                      // Sort episodes by order
+                      const sortedEpisodes = [...selectedCampaign.episodes].sort((a, b) => a.order - b.order)
+
+                      return (
+                        <Accordion type="single" collapsible className="w-full">
+                          {sortedEpisodes.map((episode, index) => {
+                            const episodeData = getEpisodeById(episode.episodeId)
+                            return (
+                              <AccordionItem
+                                key={episode.episodeId}
+                                value={episode.episodeId}
+                                className="border-b border-[#cc99cc]/30"
+                              >
+                                <AccordionTrigger className="hover:text-[#cc99cc] py-4">
+                                  <div className="flex items-center">
+                                    <div
+                                      className={`w-6 h-6 rounded-full ${getLcarsColor(index)} flex items-center justify-center text-black font-bold mr-3`}
+                                    >
+                                      {episode.order}
+                                    </div>
+                                    <div className="text-left">
+                                      <div className="text-[#cc99cc]">{episode.title}</div>
+                                      <div className="text-xs text-[#99ccff]">
+                                        {episodeData ? `Stardate: ${episodeData.stardate}` : "Episode not installed"}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="pl-9 pr-4">
+                                  <div className="bg-black/50 p-3 rounded-lg border border-[#cc99cc]/30">
+                                    <p className="text-gray-300 mb-3">
+                                      {episode.description || episodeData?.description || "No description available"}
+                                    </p>
+
+                                    {episodeData ? (
+                                      <Button
+                                        className="bg-[#ff9900] text-black hover:bg-[#ffb84d] hover:text-black"
+                                        onClick={() => handleStartSpecificEpisode(selectedCampaign, episodeData)}
+                                      >
+                                        Start Episode
+                                      </Button>
+                                    ) : (
+                                      <div className="text-[#cc6666] text-sm">
+                                        This episode is not installed. Please make sure all campaign episodes are
+                                        available.
+                                      </div>
+                                    )}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            )
+                          })}
+                        </Accordion>
+                      )
+                    })()}
+                  </div>
+                </ScrollArea>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Right sidebar */}
+        <div className="w-48 bg-black flex flex-col">
+          <div className="h-32 w-full bg-[#cc99cc] rounded-bl-3xl"></div>
+
+          {/* LCARS decorative elements */}
+          <div className="flex flex-col space-y-4 p-3 mt-4">
+            <div className="h-8 w-full bg-[#ff9900] rounded-l-full"></div>
+            <div className="h-8 w-full bg-[#99ccff] rounded-l-full"></div>
+            <div className="h-8 w-full bg-[#ffcc00] rounded-l-full"></div>
+            <div className="h-8 w-full bg-[#cc6666] rounded-l-full"></div>
+            <div className="h-8 w-full bg-[#66cc66] rounded-l-full"></div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="mt-auto p-3 space-y-3">
             <Button
               variant="outline"
-              className="border-[#66cc66] bg-[#66cc66] text-black hover:bg-[#88ff88] hover:text-black lcars-button"
+              className="border-[#66cc66] bg-[#66cc66] text-black hover:bg-[#88ff88] hover:text-black lcars-button w-full h-12"
               disabled={!hasSavedProgress}
               onClick={handleContinueCampaign}
             >
               <Save className="mr-2 h-4 w-4" />
               CONTINUE
             </Button>
+
             <Button
-              className="bg-[#cc99cc] text-black hover:bg-[#996699] hover:text-white lcars-button"
+              className="bg-[#cc99cc] text-black hover:bg-[#996699] hover:text-white lcars-button w-full h-12"
               disabled={!selectedCampaignId}
               onClick={handleStartCampaign}
             >
@@ -492,8 +647,13 @@ export function CampaignSelector({ onStartCampaign }: CampaignSelectorProps) {
               START CAMPAIGN
             </Button>
           </div>
+
+          {/* Bottom decorative element */}
+          <div className="mt-4">
+            <div className="h-32 w-full bg-[#cc99cc] rounded-tl-3xl"></div>
+          </div>
         </div>
-      </footer>
+      </div>
     </div>
   )
 }
