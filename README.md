@@ -41,7 +41,6 @@
 - Map editor for custom star systems
 - Procedural event generator
 - Player logs, mission journals, and ranking system
-- Optional multiplayer bridge mode
 
 ## 📁 File Structure (WIP)
 
