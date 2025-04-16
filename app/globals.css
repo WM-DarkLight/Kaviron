@@ -164,3 +164,105 @@
   --minimalist-background: #000000;
   --minimalist-text: #ffffff;
 }
+
+/* Add these additional LCARS styles to the end of the file */
+
+/* Enhanced LCARS UI Elements */
+.lcars-corner {
+  position: relative;
+  overflow: hidden;
+}
+
+.lcars-corner::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.lcars-bar {
+  position: relative;
+  height: 1.5rem;
+  background-color: #ff9900;
+  margin: 0.25rem 0;
+  border-radius: 0.75rem;
+}
+
+.lcars-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.lcars-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(-100%);
+  animation: button-scan 2s infinite;
+}
+
+@keyframes button-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* LCARS Panel Styles */
+.lcars-panel {
+  background-color: black;
+  border: 2px solid #ff9900;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  position: relative;
+}
+
+.lcars-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+  background: linear-gradient(to right, #ff9900, #cc99cc, #99ccff, #cc99cc, #ff9900);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* LCARS Grid Layout */
+.lcars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* LCARS Readout Display */
+.lcars-display {
+  font-family: "Courier New", monospace;
+  background-color: #000;
+  color: #99ccff;
+  border: 1px solid #99ccff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.lcars-display::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #99ccff, transparent);
+  animation: scanning 3s infinite;
+}
