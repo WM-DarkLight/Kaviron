@@ -53,6 +53,37 @@ Episodes are written in structured JSON, describing:
 - Character dialogue
 - Environmental interactions
 
+![Screenshot 2025-04-16 184117](https://github.com/user-attachments/assets/d67d6e1a-a2ac-454b-bc72-0e918b950986)
+
+
+
+![Screenshot 2025-04-16 184254](https://github.com/user-attachments/assets/d2e9264e-ad0f-4dba-a05f-df4a6c0b86d5)
+
+
+
+![Screenshot 2025-04-16 184122](https://github.com/user-attachments/assets/44ccc7b9-8e53-47e6-ab5d-9f555b9691c1)
+
+
+
+![Screenshot 2025-04-16 184234](https://github.com/user-attachments/assets/69e80bee-125d-4261-812e-f3c0c9ba1155)
+
+
+
+![Screenshot 2025-04-16 184221](https://github.com/user-attachments/assets/f8815a88-3dfb-401e-b274-aabf5701ddba)
+
+
+
+![Screenshot 2025-04-16 184210](https://github.com/user-attachments/assets/629d232c-07b0-4cab-acfb-d9ee6c192418)
+
+
+
+![Screenshot 2025-04-16 184126](https://github.com/user-attachments/assets/62613647-c1b8-4077-983e-f6755b2fd08b)
+
+
+
+![Screenshot 2025-04-16 133139](https://github.com/user-attachments/assets/9c42da28-acfd-4d80-97c0-beb36973d669)
+
+
 *More documentation available soon via the Kaviron Docs site.*
 
 ## 🧪 Local Development
@@ -62,34 +93,3 @@ git clone https://github.com/WM-DarkLight/Kaviron.git
 cd Kaviron
 npm install
 npm run dev
-
-
-![Screenshot 2025-04-16 133139](https://github.com/user-attachments/assets/4624bd13-768a-4083-9293-597584114a86)
-
-
-
-![Screenshot 2025-04-16 184234](https://github.com/user-attachments/assets/2457a0a8-3027-43ec-87fd-412a0a1b4562)
-
-
-
-![Screenshot 2025-04-16 184221](https://github.com/user-attachments/assets/7fb4f501-d215-4283-b01f-9404a80b405d)
-
-
-
-![Screenshot 2025-04-16 184210](https://github.com/user-attachments/assets/85a13b29-14c5-4741-9dfd-4be61b029163)
-
-
-
-![Screenshot 2025-04-16 184126](https://github.com/user-attachments/assets/2644b67f-ef2f-4e22-a48d-961de5c7295e)
-
-
-
-![Screenshot 2025-04-16 184122](https://github.com/user-attachments/assets/eeb0ca9b-0199-4c2a-b750-12ccddd70a1d)
-
-
-
-![Screenshot 2025-04-16 184117](https://github.com/user-attachments/assets/1229e8a0-5b76-4f7e-8d44-236278c50d06)
-
-
-
-![Screenshot 2025-04-16 184254](https://github.com/user-attachments/assets/9a20505c-474c-4493-955e-0dfd991555af)
